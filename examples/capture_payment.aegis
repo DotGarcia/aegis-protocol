@@ -1,0 +1,20 @@
+package billing.v1;
+
+capability billing.capture_payment {
+  scope merchant_id:u64;
+  expires required;
+  replay_window 10m;
+}
+
+state Authenticated {
+  allow CapturePayment using billing.capture_payment;
+}
+
+message CapturePayment @type(0x2101) @max_size(1024) @cpu_budget(1ms) @memory_budget(4kb) @requires_capability(billing.capture_payment) @allowed_state(Authenticated) @idempotent(required) @security(hardened) {
+  required u64 merchant_id = 1;
+  required u64 invoice_id = 2;
+  required i64 amount_cents = 3;
+  required u16 currency = 4;
+  required bytes idempotency_key = 5 size 32 @secret @no_log @constant_time_compare;
+  optional string reference = 6 max 128 utf8 no_control_chars @safe_log;
+}

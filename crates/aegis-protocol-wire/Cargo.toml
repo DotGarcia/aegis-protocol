@@ -1,0 +1,20 @@
+[package]
+name = "aegis-protocol-wire"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Wire-format framing and payload validation for the experimental Aegis protocol."
+readme = "README.md"
+keywords = ["protocol", "binary", "framing", "wire", "network"]
+categories = ["encoding", "network-programming", "parser-implementations"]
+
+[features]
+default = ["std"]
+std = ["aegis-protocol-core/std"]
+alloc = ["aegis-protocol-core/alloc"]
+
+[dependencies]
+aegis-protocol-core = { path = "../aegis-protocol-core", version = "0.1.0", default-features = false }

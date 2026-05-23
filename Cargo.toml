@@ -1,0 +1,21 @@
+[workspace]
+members = [
+    "crates/aegis-protocol",
+    "crates/aegis-protocol-core",
+    "crates/aegis-protocol-wire",
+    "crates/aegis-protocol-idl",
+    "crates/aegis-protocol-codegen",
+    "crates/aegis-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.74"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/DotGarcia/aegis-protocol"
+homepage = "https://github.com/DotGarcia/aegis-protocol"
+
+[workspace.lints.rust]
+missing_docs = "warn"
+unsafe_code = "forbid"

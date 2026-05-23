@@ -1,0 +1,26 @@
+[package]
+name = "aegis-protocol"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Umbrella crate for the experimental Aegis secure binary protocol."
+readme = "README.md"
+keywords = ["protocol", "binary", "security", "wire", "network"]
+categories = ["encoding", "network-programming", "parser-implementations"]
+
+[features]
+default = ["std", "wire", "idl", "codegen"]
+std = ["aegis-protocol-core/std", "aegis-protocol-wire?/std"]
+alloc = ["aegis-protocol-core/alloc", "aegis-protocol-wire?/alloc"]
+wire = ["dep:aegis-protocol-wire"]
+idl = ["dep:aegis-protocol-idl"]
+codegen = ["idl", "dep:aegis-protocol-codegen"]
+
+[dependencies]
+aegis-protocol-core = { path = "../aegis-protocol-core", version = "0.1.0", default-features = false }
+aegis-protocol-wire = { path = "../aegis-protocol-wire", version = "0.1.0", default-features = false, optional = true }
+aegis-protocol-idl = { path = "../aegis-protocol-idl", version = "0.1.0", optional = true }
+aegis-protocol-codegen = { path = "../aegis-protocol-codegen", version = "0.1.0", optional = true }

@@ -1,0 +1,15 @@
+[package]
+name = "aegis-protocol-codegen"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+homepage.workspace = true
+description = "Rust code generation for the experimental Aegis protocol IDL."
+readme = "README.md"
+keywords = ["protocol", "codegen", "schema", "idl", "aegis"]
+categories = ["encoding", "development-tools"]
+
+[dependencies]
+aegis-protocol-idl = { path = "../aegis-protocol-idl", version = "0.1.0" }

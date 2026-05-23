@@ -1,0 +1,21 @@
+package trading.v1;
+
+capability trading.publish_trade {
+  scope venue:u16;
+  expires required;
+  replay_window 30s;
+}
+
+state Authenticated {
+  allow TradeExecuted using trading.publish_trade;
+}
+
+message TradeExecuted @type(0x3001) @max_size(512) @requires_capability(trading.publish_trade) @allowed_state(Authenticated) @security(core) {
+  required u64 trade_id = 1;
+  required u64 instrument_id = 2;
+  required i64 price_micros = 3;
+  required u32 quantity = 4;
+  required u8 side = 5;
+  required timestamp_ns executed_at = 6;
+  optional bytes proof = 7 max 128 @hash_log;
+}
