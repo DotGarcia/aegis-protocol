@@ -33,6 +33,9 @@ cargo publish -p aegis-protocol-wire
 cargo publish -p aegis-protocol-idl --dry-run
 cargo publish -p aegis-protocol-idl
 
+cargo publish -p aegis-protocol-token --dry-run
+cargo publish -p aegis-protocol-token
+
 cargo publish -p aegis-protocol-codegen --dry-run
 cargo publish -p aegis-protocol-codegen
 
@@ -65,3 +68,17 @@ when you are comfortable committing to the names.
 - If a publish has a mistake, increment to `0.1.1` or `0.2.0`.
 - Keep the wire format marked unstable until the protocol reaches `1.0.0`.
 - Do not publish secrets, private schemas or generated credentials in examples.
+
+## ACT token crate
+
+Publish `aegis-protocol-token` after `aegis-protocol-core` and before the
+umbrella crate:
+
+```bash
+cargo publish -p aegis-protocol-token --dry-run
+cargo publish -p aegis-protocol-token
+```
+
+The token crate intentionally does not include cryptographic implementations.
+Applications should plug in audited signing and verification libraries through
+the `TokenSigner` and `TokenVerifier` traits.

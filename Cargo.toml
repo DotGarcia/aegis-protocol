@@ -3,6 +3,7 @@ members = [
     "crates/aegis-protocol",
     "crates/aegis-protocol-core",
     "crates/aegis-protocol-wire",
+    "crates/aegis-protocol-token",
     "crates/aegis-protocol-idl",
     "crates/aegis-protocol-codegen",
     "crates/aegis-cli",

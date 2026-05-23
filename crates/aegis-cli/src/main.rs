@@ -4,6 +4,7 @@ use std::process;
 
 use aegis_protocol_codegen::generate_rust_module;
 use aegis_protocol_idl::{fingerprint_hex, parse_document, schema_fingerprint, validate_document};
+use aegis_protocol_token::AegisToken;
 use aegis_protocol_wire::{ControlFrameHeader, HotFrameHeader};
 
 fn main() {
@@ -112,6 +113,49 @@ fn run() -> Result<(), String> {
                 print!("{generated}");
             }
         }
+        "token-inspect" => {
+            let path = args.next().ok_or_else(|| "missing token path".to_owned())?;
+            let bytes = fs::read(&path).map_err(|e| format!("failed to read {path}: {e}"))?;
+            let token = if bytes.starts_with(b"ACT1") {
+                AegisToken::decode_binary(&bytes).map_err(|e| format!("invalid binary ACT: {e}"))?
+            } else {
+                let text = std::str::from_utf8(&bytes)
+                    .map_err(|_| "token is neither binary ACT nor UTF-8 compact ACT".to_owned())?;
+                AegisToken::decode_compact(text.trim())
+                    .map_err(|e| format!("invalid compact ACT: {e}"))?
+            };
+            println!("Aegis Capability Token");
+            println!("profile: {:?}", token.header.profile);
+            println!("algorithm: {:?}", token.header.algorithm);
+            println!("flags: 0x{:04x}", token.header.flags.bits());
+            println!("key_id_len: {}", token.header.key_id.len());
+            if !token.header.issuer_hint.is_empty() {
+                println!("issuer_hint: {}", token.header.issuer_hint);
+            }
+            println!("issuer: {}", token.claims.issuer);
+            println!("subject: {}", token.claims.subject);
+            println!("audience: {}", token.claims.audience);
+            println!("issued_at_ns: {}", token.claims.issued_at_ns);
+            println!("not_before_ns: {}", token.claims.not_before_ns);
+            println!("expires_at_ns: {}", token.claims.expires_at_ns);
+            println!("schema_id: {}", token.claims.schema_id);
+            println!("max_budget_class: {:?}", token.claims.max_budget_class);
+            println!("security_profile: {:?}", token.claims.security_profile);
+            println!("capabilities: {}", token.claims.capabilities.len());
+            for capability in &token.claims.capabilities {
+                println!(
+                    "- {} id={} scope_bytes={} messages={}",
+                    capability.name,
+                    capability.capability_id,
+                    capability.scope.len(),
+                    capability.allowed_messages.len()
+                );
+                for message in &capability.allowed_messages {
+                    println!("  message: {}", message);
+                }
+            }
+            println!("signature_len: {}", token.signature.len());
+        }
         "inspect" => {
             let mut hot = false;
             let mut path: Option<String> = None;
@@ -167,4 +211,5 @@ fn print_usage() {
     println!("  aegis fingerprint <schema.aegis>");
     println!("  aegis generate <schema.aegis> --rust [-o generated.rs]");
     println!("  aegis inspect [--hot] <frame.bin>");
+    println!("  aegis token-inspect <token.act|compact.txt>");
 }

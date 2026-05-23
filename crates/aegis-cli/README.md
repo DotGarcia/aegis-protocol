@@ -7,4 +7,5 @@ aegis check schema.aegis
 aegis fingerprint schema.aegis
 aegis generate schema.aegis --rust -o generated.rs
 aegis inspect [--hot] frame.bin
+aegis token-inspect token.act
 ```

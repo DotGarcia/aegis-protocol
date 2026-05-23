@@ -26,8 +26,9 @@ This version includes a more complete MVP surface:
 - wire helpers: hot-frame budget validation, bitmap checks, string/bytes views, stream flow-control payload
 - IDL improvements: capabilities, states, message contracts, validation and schema fingerprints
 - codegen improvements: schema fingerprint constants, capability constants and field constraint constants
-- CLI improvements: `check`, `fingerprint`, `generate --rust -o`, and `inspect --hot`
-- extra docs for IDL, security model and publishing
+- ACT token primitives: binary token model, compact text form and validation helpers
+- CLI improvements: `check`, `fingerprint`, `generate --rust -o`, `inspect --hot`, and `token-inspect`
+- extra docs for IDL, ACT tokens, security model and publishing
 
 ## Workspace
 
@@ -36,6 +37,7 @@ This version includes a more complete MVP surface:
 | `aegis-protocol` | Umbrella crate that re-exports the family |
 | `aegis-protocol-core` | Core protocol types, errors, budgets, replay window, policies, varints and safe views |
 | `aegis-protocol-wire` | Hot/control frame headers, stream helpers and payload layout validation |
+| `aegis-protocol-token` | Aegis Capability Token, binary and compact token primitives |
 | `aegis-protocol-idl` | Aegis IDL parser, AST, semantic validation and fingerprints |
 | `aegis-protocol-codegen` | Rust code generation from Aegis IDL |
 | `aegis-protocol-cli` | Small `aegis` command-line tool |
@@ -47,7 +49,15 @@ cargo test --workspace --all-features
 cargo run -p aegis-protocol-cli -- check examples/capture_payment.aegis
 cargo run -p aegis-protocol-cli -- fingerprint examples/capture_payment.aegis
 cargo run -p aegis-protocol-cli -- generate examples/capture_payment.aegis --rust -o generated.rs
+cargo run -p aegis-protocol-cli -- token-inspect examples/capability_token.act.txt
 ```
+
+## ACT capability tokens
+
+This workspace includes `aegis-protocol-token`, which implements ACT: Aegis
+Capability Tokens. ACT is a deterministic binary token format for
+capability-bearing credentials, with a compact text representation for
+transport. See `docs/ACT.md`.
 
 ## Publishing order
 
@@ -62,6 +72,9 @@ cargo publish -p aegis-protocol-wire
 
 cargo publish -p aegis-protocol-idl --dry-run
 cargo publish -p aegis-protocol-idl
+
+cargo publish -p aegis-protocol-token --dry-run
+cargo publish -p aegis-protocol-token
 
 cargo publish -p aegis-protocol-codegen --dry-run
 cargo publish -p aegis-protocol-codegen

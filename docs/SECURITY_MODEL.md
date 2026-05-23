@@ -40,3 +40,17 @@ window.
 
 IDL field policies should drive logging decisions. Secret fields should use
 `@no_log`; PII should be redacted or hashed according to your deployment rules.
+
+## ACT capability tokens
+
+Aegis includes ACT, the Aegis Capability Token. ACT is the protocol-level
+authorization token format used to bind issuer, subject, audience, schema id,
+budget class, security profile and capability claims.
+
+ACT should be treated as an authorization input, not as proof by itself. A
+receiver should verify the token signature, validate expiration, audience,
+schema id, capability id and message-type allow-list, and only then bind the
+accepted capability to a negotiated Aegis session slot.
+
+The `Unsecured` token algorithm exists only for examples and tests. Production
+profiles should reject it.

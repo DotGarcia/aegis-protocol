@@ -19,6 +19,7 @@ jobs:
       - run: cargo package -p aegis-protocol-core
       - run: cargo package -p aegis-protocol-idl
       - run: cargo package -p aegis-protocol-wire
+      - run: cargo package -p aegis-protocol-token
       - run: cargo package -p aegis-protocol-codegen
       - run: cargo package -p aegis-protocol
       - run: cargo package -p aegis-protocol-cli

@@ -6,8 +6,14 @@ This crate re-exports the lower-level crates:
 
 - `aegis_protocol_core`
 - `aegis_protocol_wire` behind the `wire` feature
+- `aegis_protocol_token` behind the `token` feature
 - `aegis_protocol_idl` behind the `idl` feature
 - `aegis_protocol_codegen` behind the `codegen` feature
+
+Enable the `token` feature to use `aegis-protocol-token`, which provides ACT:
+Aegis Capability Tokens. ACT is a deterministic binary token format for
+capability-bearing credentials, with a compact text representation for
+transport.
 
 ## Status
 
